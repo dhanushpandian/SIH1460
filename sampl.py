@@ -1,4 +1,5 @@
 import streamlit as st
+
 st.header("Questions:")
 
 math_questions_list_easy = {
@@ -57,29 +58,45 @@ math_questions_list_hard={
 }
 
 
-easy_crct=0
-hard_crct=0
-easy_wrng=0
-hard_wrng=0
 
-x=1
+easy_crct = 0
+hard_crct = 0
+easy_wrng = 0
+hard_wrng = 0
 
-while(x<=len(math_questions_list_easy)):
-    st.write(math_questions_list_easy[x][0])
-    #ans= st.radio("Select an option:", ["Option A", "Option B", "Option C"])
-    ans= st.radio("Select an option:", math_questions_list_easy[x][1])
+easy_question_index = 1
+hard_question_index = 1
 
-    st.write("You selected:",ans)
+while easy_crct + easy_wrng < len(math_questions_list_easy) or hard_crct + hard_wrng < len(math_questions_list_hard):
+    if easy_question_index <= len(math_questions_list_easy) and (easy_crct < 2 or (easy_crct - easy_wrng) < 1):
+        question = math_questions_list_easy[easy_question_index]
+        question_type = "easy"
+    else:
+        question = math_questions_list_hard[hard_question_index]
+        question_type = "hard"
 
-    #st.write(easy_crct,easy_wrng)
+    st.write(question[0])
+    ans = st.radio("Select an option:", question[1])
+
+    st.write("You selected:", ans)
 
     if st.button("Submit"):
-        if ans[0]==math_questions_list_easy[x][-1]:
-            easy_crct+=1
+        correct_answer = question[-1]
+        if ans[0] == correct_answer:
+            if question_type == "easy":
+                easy_crct += 1
+            else:
+                hard_crct += 1
         else:
-            easy_wrng+=1
-        x+=1
+            if question_type == "easy":
+                easy_wrng += 1
+            else:
+                hard_wrng += 1
 
+        if question_type == "easy":
+            easy_question_index += 1
+        else:
+            hard_question_index += 1
 
-
-
+st.write("Easy Questions - Correct:", easy_crct, "Wrong:", easy_wrng)
+st.write("Hard Questions - Correct:", hard_crct, "Wrong:", hard_wrng)

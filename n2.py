@@ -33,13 +33,13 @@ def display_question(question_data):
     if selected_option == question_data["correct_option"]:
         quiz_score += 1
 
-if current_question < len(quiz_data):
+while current_question < len(quiz_data):
     display_question(quiz_data[current_question])
 
     if st.button("Next"):
         current_question += 1
 
 
-else:
-    st.write("Quiz completed!")
-    st.write(f"Your Score: {quiz_score}/{len(quiz_data)}")
+
+st.write("Quiz completed!")    
+st.write(f"Your Score: {quiz_score}/{len(quiz_data)}")
